@@ -90,9 +90,9 @@ echo
 # Tell configure what tools to use.
 target_host=aarch64-linux-android
 export AR=$target_host-ar
-export AS=$target_host-gcc
-export CC=$target_host-gcc
-export CXX=$target_host-g++
+export AS=$target_host-clang
+export CC=$target_host-clang
+export CXX=$target_host-clang++
 export LD=$target_host-ld
 export STRIP=$target_host-strip
 
@@ -137,7 +137,7 @@ cd ${BOOSTDIR2}
 rm user-config.jam
 echo "using mpi ;" > user-config.jam
 
-echo "using gcc : arm : ${ABS_TOOLCHAIN}/bin/$CXX ; " >> user-config.jam
+echo "using clang : arm : ${ABS_TOOLCHAIN}/bin/$CXX ; " >> user-config.jam
 
 ./bootstrap.sh 
 
@@ -171,10 +171,11 @@ echo "Have patience this takes a long time..."
     threading=multi \
     target-os=android \
     architecture=arm \
+    toolset=clang \
     cxxflags="$CXXFLAGS" \
     linkflags="$LINKFLAGS" \
     --user-config=user-config.jam \
-    --layout=system \
+    --layout=versioned \
     --prefix=$INSTALL_DIR \
     --build-dir=$BUILD_DIR \
     --with-atomic \
